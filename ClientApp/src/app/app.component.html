@@ -1,0 +1,49 @@
+
+<div class="container" style="margin-top: 50px;"> 
+  <div class="card">
+    <div class="card-header">
+      
+      <form [formGroup]="fb"> 
+        <div class="form-row">
+          <div class="col">
+            <select name="buildingId" class="form-control" 
+            (change)="onBuildingChange($any($event.target).value)">
+              <option selected>Select Building</option>
+              <option *ngFor="let buid of buildings"  [value]="buid.id">{{buid.name}}</option>
+              </select>
+          </div>
+          <div class="col">
+            <select name="buildingId" class="form-control" 
+            (change)="onPObjectIdChange($any($event.target).value)">
+              <option selected>Select Object</option>
+              <option *ngFor="let obj of pObjects"  [value]="obj.id">{{obj.name}}</option>
+              </select>
+          </div>
+          <div class="col">
+            <select name="buildingId" class="form-control" 
+            (change)="onDataFieldIdChange($any($event.target).value)">
+              <option selected>Select Data Field</option>
+              <option *ngFor="let buid of dataField"  [value]="buid.id">{{buid.name}}</option>
+              </select>
+          </div>
+          <div class="col">
+            
+              <input class="form-control"
+               #drp="bsDaterangepicker" 
+               bsDaterangepicker [(ngModel)]="bsRangeValue"
+               (bsValueChange)="onDateChange($event)"
+                placeholder="Date Range">
+          </div>
+         
+          <div class="col">
+            <input type="button" (click)="getResult()" class="btn btn-primary form-control" value="Search">
+          </div>
+         
+        </div>
+      </form>
+    </div>
+    <div class="card-body">
+      <canvas id="chartLine" width="400" height="400"></canvas>
+   
+  </div>
+</div>
