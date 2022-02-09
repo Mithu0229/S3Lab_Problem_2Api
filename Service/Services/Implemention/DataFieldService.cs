@@ -18,8 +18,17 @@ namespace Service.Services
         }
         public async Task<List<DataField>> GetDataFields()
         {
-            var results = await _db.DataFields.ToListAsync();
-            return results;
+            try
+            {
+                var results = await _db.DataFields.ToListAsync();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //log here
+                throw;
+            }
+          
         }
     }
 }

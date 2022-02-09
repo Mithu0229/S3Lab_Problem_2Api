@@ -19,8 +19,16 @@ namespace Service.Services
         
         public async Task<List<PObject>> GetPObjects()
         {
-            var results = await _db.PObjects.ToListAsync();
-            return results;
+            try
+            {
+                var results = await _db.PObjects.ToListAsync();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //log here
+                throw;
+            }
         }
     }
 }

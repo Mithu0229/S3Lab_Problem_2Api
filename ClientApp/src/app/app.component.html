@@ -13,22 +13,22 @@
               </select>
           </div>
           <div class="col">
-            <select name="buildingId" class="form-control" 
+            <select name="pObjectId" class="form-control" 
             (change)="onPObjectIdChange($any($event.target).value)">
               <option selected>Select Object</option>
               <option *ngFor="let obj of pObjects"  [value]="obj.id">{{obj.name}}</option>
               </select>
           </div>
           <div class="col">
-            <select name="buildingId" class="form-control" 
+            <select name="dataFieldId" class="form-control" 
             (change)="onDataFieldIdChange($any($event.target).value)">
               <option selected>Select Data Field</option>
-              <option *ngFor="let buid of dataField"  [value]="buid.id">{{buid.name}}</option>
+              <option *ngFor="let obj of dataFields"  [value]="obj.id">{{obj.name}}</option>
               </select>
           </div>
           <div class="col">
             
-              <input class="form-control"
+              <input class="form-control" formControlName="dateRange"
                #drp="bsDaterangepicker" 
                bsDaterangepicker [(ngModel)]="bsRangeValue"
                (bsValueChange)="onDateChange($event)"
@@ -36,14 +36,13 @@
           </div>
          
           <div class="col">
-            <input type="button" (click)="getResult()" class="btn btn-primary form-control" value="Search">
+            <input type="button" (click)="getReadingByFilter()" class="btn btn-primary form-control" value="Search">
           </div>
          
         </div>
       </form>
     </div>
     <div class="card-body">
-      <canvas id="chartLine" width="400" height="400"></canvas>
-   
+      <div id="chartContainer" style="height: 370px; width: 100%; margin:auto;"></div>
   </div>
 </div>

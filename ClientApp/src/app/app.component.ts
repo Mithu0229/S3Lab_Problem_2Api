@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Building } from './models/building';
 import { ReadingService } from './service/reading.service';
-import { Chart, registerables } from 'chart.js';
+
 import { ReadingModel } from './models/readingModel';
 import { ReadModel, ReadModelList } from './models/ReadModel';
+import * as CanvasJS from './canvasjs.min';
+import { PObject } from './models/pObhect';
+import { DataField } from './models/dataField';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +17,12 @@ import { ReadModel, ReadModelList } from './models/ReadModel';
 export class AppComponent {
   title = 'ClientApp';
   buildings? : Building[];
-  pObjects : any;
-  dataField : any; 
+  pObjects? : PObject[];
+  dataFields? : DataField[]; 
   fromDate? :any; 
   todate? :any;
-  readingModel: ReadingModel  = {} as ReadingModel;
 
+  readingModel: ReadingModel  = {} as ReadingModel;
   read:ReadModelList = {} as ReadModelList;
   fb: FormGroup;
   
@@ -27,13 +30,9 @@ export class AppComponent {
   bsRangeValue: Date[];
   maxDate = new Date();
 
-
-  chart:any=[];
-
-  
   
   constructor(private builder: FormBuilder, private readingService :ReadingService) {
-    Chart.register(...registerables);
+    
      this.bsRangeValue = [this.bsValue, this.maxDate];
     
     this.fb=this.builder.group({
@@ -42,6 +41,7 @@ export class AppComponent {
       buildingId: new FormControl(''),
       pObjectId: new FormControl(''),
       dataFieldId: new FormControl(''),
+      dateRange :new FormControl('')
 
     });
     
@@ -55,41 +55,45 @@ export class AppComponent {
     
   }
 
-
   onDateChange(event:any){
-    console.log(event[0],'ok',event[1]);
-
     this.fromDate=event[0];
     this.todate = event[1];
   }
-  getResult(){
+  getReadingByFilter(){
     this.readingModel.buildingId =this.fb.get('buildingId')?.value;
     this.readingModel.dataFieldId =this.fb.get('dataFieldId')?.value;
     this.readingModel.pObjectId = this.fb.get('pObjectId')?.value;
     this.readingModel.fromDate =this.fromDate;
     this.readingModel.toDate =this.todate;
 
-    this.readingService.getResult(this.readingModel).subscribe(res=>{
+    this.readingService.getReadingByFilter(this.readingModel).subscribe(res=>{
       this.read=res;
       console.log(res,'okkkk');
     });
 
-    this.chart =new Chart('chartLine',{
+    var dataPoint = [] as any;
     
-      type: 'line',
-      data: {
-          labels: [this.read.timeStamps],
-          
-          datasets: [{
-            label: 'Time Series Data',
-            data: this.read.values,
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-          }]
+    for (var i = 0; i < this.read.values.length; i += 1) {
+      dataPoint.push({
+        
+        x: this.read.timeStamps[i],
+        y: this.read.values[i]                
+      });
+    }
+
+    let chart = new CanvasJS.Chart("chartContainer",{
+			theme: "light1",
+      title: {
+        text: "Time Series Data"
       },
-    
-    })
+      data: [
+        {
+          type: "line", 
+          dataPoints:dataPoint
+        }
+      ]
+		});
+    chart.render();
   
   }
 
@@ -97,8 +101,6 @@ export class AppComponent {
   loadBuilding(){
     this.readingService.getBuildings().subscribe(res=>{
       this.buildings=res;
-      console.log('from service',this.buildings);
-      
     },error=>{
       console.log("error list");
     });
@@ -116,13 +118,12 @@ export class AppComponent {
   
   loadDataField(){
     this.readingService.getDataFields().subscribe(res=>{
-      this.dataField=res;
+      this.dataFields=res;
     },error=>{
       console.log("error list");
     });
   }
   
-
   onBuildingChange(id :any){
  this.fb.controls['buildingId'].setValue(id);
   
@@ -130,7 +131,6 @@ export class AppComponent {
   onPObjectIdChange(id :any){
     this.fb.controls['pObjectId'].setValue(id);
   }
-
 
   onDataFieldIdChange(id :any){
     this.fb.controls['dataFieldId'].setValue(id);

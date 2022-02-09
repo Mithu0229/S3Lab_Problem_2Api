@@ -18,8 +18,17 @@ namespace Service.Services
         }
         public async Task<List<Building>> GetBuildings()
         {
-            var results = await _db.Buildings.ToListAsync();
-            return results;
+            try
+            {
+                var results = await _db.Buildings.ToListAsync();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //log here
+                throw;
+            }
+           
         }
     }
 }

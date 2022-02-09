@@ -15,7 +15,6 @@ namespace Data.Data
              : base(options)
         {
         }
-
         public DbSet<Building> Buildings { get; set; }
         public DbSet<PObject> PObjects { get; set; }
         public DbSet<DataField> DataFields { get; set; }

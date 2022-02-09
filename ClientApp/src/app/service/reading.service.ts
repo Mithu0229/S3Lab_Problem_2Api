@@ -6,7 +6,7 @@ import { Building } from '../models/building';
 import { DataField } from '../models/dataField';
 import { PObject } from '../models/pObhect';
 import { ReadingModel } from '../models/readingModel';
-import { ReadModel, ReadModelList } from '../models/ReadModel';
+import {  ReadModelList } from '../models/ReadModel';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class ReadingService {
     return this.http.get<DataField[]>(this.url + 'DataField');
    }
 
-   getResult(model:ReadingModel){
+   getReadingByFilter(model:ReadingModel){
      console.log(model,'ser')
      return this.http.post<ReadModelList>(this.url+'Reading',model);
    }

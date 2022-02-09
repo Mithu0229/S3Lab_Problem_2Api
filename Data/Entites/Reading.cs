@@ -13,10 +13,8 @@ namespace Data.Entites
         public Building Building { get; set; }
         public int PObjectId { get; set; }
         public PObject PObject { get; set; }
-
         public int DataFieldId { get; set; }
         public DataField DataField { get; set; }
-
         public decimal Value { get; set; }
         public DateTime TimeStamp { get; set; }
 

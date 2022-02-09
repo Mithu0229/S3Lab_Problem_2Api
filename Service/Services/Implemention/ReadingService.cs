@@ -19,12 +19,21 @@ namespace Service.Services
 
         public  List<ReadModel> GetReadings(ReadPassModel model)
         {
-            var buildings = _db.Readings.AsQueryable()
-                .Where(x => x.BuildingId == model.BuildingId && x.PObjectId == model.PObjectId && x.DataFieldId == model.DataFieldId
-                 && x.TimeStamp >= model.FromDate && x.TimeStamp <= model.ToDate
-                 ).AsParallel();
-            var result = buildings.Select(x => new ReadModel { Value = x.Value, TimeStamp = x.TimeStamp.Hour }).ToList();
-            return result;
+            try
+            {
+                var buildings = _db.Readings.AsQueryable()
+               .Where(x => x.BuildingId == model.BuildingId && x.PObjectId == model.PObjectId && x.DataFieldId == model.DataFieldId
+                && x.TimeStamp >= model.FromDate && x.TimeStamp <= model.ToDate
+                ).AsParallel();
+                var result = buildings.Select(x => new ReadModel { Value = x.Value, TimeStamp = x.TimeStamp.Hour }).OrderBy(x=>x.TimeStamp).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //log here
+                throw;
+            }
+           
         }
     }
 }

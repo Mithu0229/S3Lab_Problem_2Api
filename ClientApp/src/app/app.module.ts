@@ -20,9 +20,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-
     BsDatepickerModule.forRoot(),
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

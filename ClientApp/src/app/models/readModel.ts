@@ -1,9 +1,9 @@
 export interface ReadModel{
     value:number;
-    timeStamp:number;
+    timeStamp:any;
 }
 
 export interface ReadModelList{
     values:number[];
-    timeStamps:number[];
+    timeStamps:any[];
 }
