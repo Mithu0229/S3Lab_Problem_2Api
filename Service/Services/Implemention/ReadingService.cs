@@ -1,5 +1,6 @@
 ﻿using Data.Common;
 using Data.Data;
+using Data.Entites;
 using Service.Services;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,25 @@ namespace Service.Services
                 throw;
             }
            
+        }
+
+        public int InsertData()
+        {
+            int count = 0;
+            
+            for (int i = 2; i < 50; i+=5)
+            {
+                Reading robj = new Reading();
+                robj.BuildingId = 2;
+                robj.PObjectId = 2;
+                robj.DataFieldId = 2;
+                robj.Value = i;
+                robj.TimeStamp = DateTime.Now.AddHours(i);
+                _db.Add(robj);
+                _db.SaveChanges();
+                count++;
+            }
+            return count;
         }
     }
 }

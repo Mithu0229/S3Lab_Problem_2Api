@@ -11,5 +11,8 @@ namespace Service.Services
     public interface IReadingService
     {
        List<ReadModel> GetReadings(ReadPassModel model);
+        int InsertData();
     }
+
+
 }

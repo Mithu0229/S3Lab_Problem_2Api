@@ -17,7 +17,7 @@ namespace S3Lab_Problem_2Api.Controllers
         [HttpPost]
         public ActionResult GetReading([FromBody] ReadPassModel model)
         {
-            var results =  _readingService.GetReadings(model);
+            var results = _readingService.GetReadings(model);
 
             ReadModelList models = new ReadModelList();
 
@@ -31,9 +31,17 @@ namespace S3Lab_Problem_2Api.Controllers
             {
                 return Ok(models);
             }
-            
+
             return BadRequest("No list here.");
         }
+
+        [HttpGet]
+        public ActionResult InsertDate()
+        {
+            var count = _readingService.InsertData();
+            return Ok(count);
+        }
+
 
     }
 }
